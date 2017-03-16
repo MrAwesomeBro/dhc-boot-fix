@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Script to fix the DHClient on reboot on ubuntu after hardware replacement
+# 16.03.2017
+
+# Put the path to this script into your /etc/rc.local
+
+### DEBUG ###
+# set -x
+
+dhc='/sbin/dhclient'
+ipup=$(/sbin/ifconfig | grep -m1 inet | awk '{print $2}' | cut -d\: -f2)
+
+if [ -z $ipup ]; then
+	$dhc
+	exit 0
+elif [ $ipup = "127.0.0.1" ]; then
+	$dhc
+	exit 0
+fi
+
